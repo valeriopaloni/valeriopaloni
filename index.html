@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Il Mio Spazio — Unico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ocra:       #E8A830;   /* giallo ocra caldo */
+      --arancio:    #D45F2A;   /* arancio bruciato */
+      --terracotta: #C04A1E;   /* terracotta profonda */
+      --oliva:      #7A8C3A;   /* verde oliva */
+      --salvia:     #A0B060;   /* verde salvia chiaro */
+      --sabbia:     #F2E0C0;   /* sabbia calda */
+      --cielo-med:  #5E90B8;   /* azzurro mare mediterraneo */
+      --ink:        #2A1F14;   /* marrone scuro quasi nero */
+      --ink-mid:    #5C4A35;   /* marrone medio */
+      --offwhite:   #FAF4E8;   /* carta avorio */
+      /* sfondi sezioni */
+      --hero-r-bg:  #9B3E18;   /* terracotta bruciata */
+      --photos-bg:  #1E250F;   /* Un oliva scurissimo quasi nero, fa risaltare le foto da urlo */
+      --footer-bg:  #2A1F14;   
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--offwhite);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      cursor: none; /* Cursore custom abilitato */
+    }
+
+    /* ─── Cursore Invertito "X-Ray" (UNICO) ─── */
+    .cursor {
+      width: 20px; height: 20px;
+      background: #ffffff;
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width .3s cubic-bezier(0.25, 1, 0.5, 1), height .3s cubic-bezier(0.25, 1, 0.5, 1);
+      mix-blend-mode: difference; /* Questo inverte i colori di ciò che tocca */
+    }
+    .cursor.big { width: 70px; height: 70px; }
+
+    /* Nasconde il cursore custom sui dispositivi touch */
+    @media (hover: none) and (pointer: coarse) {
+      body { cursor: auto; }
+      .cursor { display: none; }
+    }
+
+    /* ─── Nav (Più sottile ed elegante) ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2.5rem;
+      background: rgba(250,244,232,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--ink);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem; letter-spacing: .05em;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: .8rem; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 2px; background: var(--terracotta);
+      transition: width .3s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ─── HERO RIVOLUZIONATA CON MARQUEE Orizzontale ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      padding-top: 60px;
+      position: relative;
+    }
+
+    .hero-left {
+      background: var(--ocra);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 6rem 3rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-right {
+      background: var(--hero-r-bg);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem 4rem;
+      position: relative; overflow: hidden;
+    }
+
+    /* Marquee di sfondo gigante */
+    .hero-marquee {
+      position: absolute; top: 15%; left: 0;
+      white-space: nowrap; width: 100%; overflow: hidden;
+      pointer-events: none; opacity: 0.08;
+    }
+    .marquee-inner {
+      display: inline-block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16vw; line-height: 1;
+      animation: marquee 25s linear infinite;
+      color: var(--ink);
+    }
+    @keyframes marquee {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+
+    .hero-tag {
+      font-size: .75rem; letter-spacing: .25em;
+      text-transform: uppercase; font-weight: 700;
+      color: var(--ink); margin-bottom: 1.5rem;
+    }
+    .hero-right .hero-tag { color: var(--sabbia); }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4.5rem, 9vw, 8rem);
+      line-height: .88; letter-spacing: -0.01em;
+      color: var(--ink);
+      z-index: 2;
+    }
+    .hero-right .hero-title { color: var(--sabbia); }
+
+    .hero-subtitle {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 1.2rem; line-height: 1.8;
+      margin-top: 2rem; max-width: 32ch;
+      color: rgba(250,244,232,0.85);
+      z-index: 2;
+    }
+
+    /* ─── STRIP COLORATE ─── */
+    .strip { display: grid; grid-template-columns: repeat(6,1fr); height: 8px; }
+    .strip div:nth-child(1){ background: var(--ocra);       }
+    .strip div:nth-child(2){ background: var(--arancio);    }
+    .strip div:nth-child(3){ background: var(--terracotta); }
+    .strip div:nth-child(4){ background: var(--oliva);      }
+    .strip div:nth-child(5){ background: var(--salvia);     }
+    .strip div:nth-child(6){ background: var(--cielo-med);  }
+
+    /* ─── ABOUT ─── */
+    .about { display: grid; grid-template-columns: 1fr 2.5fr; min-height: 60vh; }
+    .about-accent {
+      background: var(--oliva);
+      display: flex; align-items: center; justify-content: center; padding: 3rem;
+    }
+    .about-accent-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 6vw, 6.5rem);
+      color: var(--sabbia); writing-mode: vertical-rl;
+      letter-spacing: .05em; transform: rotate(180deg);
+    }
+    .about-content {
+      padding: 7rem 5rem;
+      background: var(--offwhite);
+      border-left: 3px solid var(--ink);
+    }
+    .about-content h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 0.95; color: var(--ink); margin-bottom: 2.5rem;
+    }
+    .about-content p {
+      font-family: 'Lora', serif;
+      font-size: 1.15rem; line-height: 1.9;
+      color: var(--ink-mid); max-width: 55ch; margin-bottom: 1.5rem;
+    }
+
+    /* ─── GALLERIA FOTOGRAFICA CINEMATICA ─── */
+    .photos { background: var(--photos-bg); padding: 7rem 3rem; }
+    .section-hdr h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 8vw, 8rem);
+      color: var(--ocra); letter-spacing: -0.01em;
+    }
+    .section-hdr .sub {
+      font-size: .8rem; letter-spacing: .3em;
+      text-transform: uppercase; color: var(--salvia); font-weight: 700;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 120px;
+      gap: 16px;
+      margin-top: 3.5rem;
+    }
+    .photo-card {
+      border-radius: 4px; overflow: hidden;
+      transition: transform .4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .4s ease;
+      position: relative;
+      background: var(--ink-mid);
+    }
+    .photo-card:hover {
+      transform: scale(1.015) translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0,0,0,.6);
+    }
+    
+    /* Configurazione Griglia Asimmetrica Avanzata */
+    .photo-card:nth-child(1) { grid-column: span 7; grid-row: span 4; }
+    .photo-card:nth-child(2) { grid-column: span 5; grid-row: span 2; }
+    .photo-card:nth-child(3) { grid-column: span 5; grid-row: span 3; }
+    .photo-card:nth-child(4) { grid-column: span 4; grid-row: span 3; }
+    .photo-card:nth-child(5) { grid-column: span 3; grid-row: span 2; }
+    .photo-card:nth-child(6) { grid-column: span 8; grid-row: span 4; }
+    .photo-card:nth-child(7) { grid-column: span 4; grid-row: span 3; }
+
+    /* Placeholder sofisticato che funge anche da overlay colorato all'hover */
+    .photo-placeholder {
+      position: absolute; top: 0; left: 0; width:100%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Bebas Neue', sans-serif; font-size:1.3rem; letter-spacing:.1em;
+      color: rgba(250,244,232,0.8);
+      z-index: 2; transition: opacity 0.4s ease;
+    }
+    .photo-card:hover .photo-placeholder { opacity: 0; } /* Scompare mostrando la foto nitida */
+
+    .photo-card:nth-child(1) .photo-placeholder { background: rgba(232, 168, 48, 0.85); }
+    .photo-card:nth-child(2) .photo-placeholder { background: rgba(122, 140, 58, 0.85); }
+    .photo-card:nth-child(3) .photo-placeholder { background: rgba(212, 95, 42, 0.85); }
+    .photo-card:nth-child(4) .photo-placeholder { background: rgba(94, 144, 184, 0.85); }
+    .photo-card:nth-child(5) .photo-placeholder { background: rgba(160, 176, 96, 0.85); }
+    .photo-card:nth-child(6) .photo-placeholder { background: rgba(192, 74, 30, 0.85); }
+    .photo-card:nth-child(7) .photo-placeholder { background: rgba(94, 144, 184, 0.85); }
+
+    .photo-card img {
+      width:100%; height:100%; object-fit:cover; display:block;
+      position: relative; z-index: 1; filter: grayscale(20%);
+      transition: filter 0.4s ease;
+    }
+    .photo-card:hover img { filter: grayscale(0%); }
+
+    /* ─── LIGHTBOX CON DIDASCALIE ─── */
+    .lightbox {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(12, 9, 6, 0.96);
+      backdrop-filter: blur(12px);
+      z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lightbox.active { opacity: 1; pointer-events: auto; }
+    .lightbox-wrapper { position: relative; max-width: 85%; max-height: 75vh; text-align: center; }
+    .lightbox img {
+      max-width: 100%; max-height: 75vh; object-fit: contain; border-radius: 2px;
+      transform: scale(0.97); transition: transform 0.4s ease;
+    }
+    .lightbox.active img { transform: scale(1); }
+    
+    /* D didascalia sotto la foto */
+    .lightbox-caption {
+      margin-top: 1.5rem; font-family: 'Lora', serif; font-style: italic;
+      color: var(--sabbia); font-size: 1.1rem; max-width: 60ch; line-height: 1.5;
+    }
+    .lightbox-close {
+      position: absolute; top: 2rem; right: 2.5rem;
+      font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
+      color: var(--sabbia); cursor: pointer; transition: color 0.2s; z-index: 10001;
+    }
+    .lightbox-close:hover { color: var(--arancio); }
+
+    /* ─── ESPERIENZE INTERATTIVE ─── */
+    .experiences { background: var(--offwhite); padding: 8rem 3rem; }
+    .experiences-inner { max-width: 900px; margin: 0 auto; }
+    .experiences h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 8vw, 8rem);
+      letter-spacing: -0.01em; color: var(--ink); margin-bottom: 3rem;
+    }
+
+    .exp-item {
+      display: grid; grid-template-columns: 140px 1fr;
+      gap: 3rem; padding: 3.5rem 1.5rem;
+      border-bottom: 2px solid var(--ink);
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease, background-color 0.3s ease;
+      border-radius: 4px;
+    }
+    .exp-item.visible { opacity:1; transform:translateY(0); }
+    .exp-item:hover { background-color: rgba(232, 168, 48, 0.1); } /* Feedback visivo al passaggio */
+
+    .exp-year {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem; line-height: 0.9;
+    }
+    .exp-item:nth-child(1) .exp-year { color: var(--arancio);    }
+    .exp-item:nth-child(2) .exp-year { color: var(--oliva);      }
+    .exp-item:nth-child(3) .exp-year { color: var(--terracotta); }
+    .exp-item:nth-child(4) .exp-year { color: var(--cielo-med);  }
+
+    .exp-season {
+      font-size: .75rem; letter-spacing: .2em;
+      text-transform: uppercase; font-weight: 700;
+      color: var(--ink-mid); display: block; margin-top: .5rem;
+    }
+    .exp-body h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem; letter-spacing: .02em;
+      color: var(--ink); margin-bottom: .6rem;
+    }
+    .exp-place {
+      font-size: .8rem; letter-spacing: .15em;
+      text-transform: uppercase; font-weight: 700;
+      color: var(--terracotta); margin-bottom: 1.2rem;
+    }
+    .exp-body p {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem; line-height: 1.9;
+      color: var(--ink-mid);
+    }
+
+    /* ─── BACK TO TOP ─── */
+    .back-to-top {
+      position: fixed; bottom: 2.5rem; right: 2.5rem; z-index: 90;
+      background: var(--ink); color: var(--sabbia);
+      width: 50px; height: 50px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: 1.4rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      opacity: 0; pointer-events: none; transition: all 0.3s ease;
+    }
+    .back-to-top.show { opacity: 1; pointer-events: auto; }
+    .back-to-top:hover { transform: translateY(-5px); background: var(--terracotta); }
+
+    /* ─── FOOTER IMPATTANTE ─── */
+    footer {
+      background: var(--footer-bg); color: var(--sabbia);
+      padding: 6rem 3rem 3rem;
+      display: grid; grid-template-columns: 1.5fr 1fr;
+      gap: 4rem; border-top: 8px solid var(--terracotta);
+    }
+    .footer-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      line-height: .85; color: var(--ocra); letter-spacing: -0.01em;
+    }
+    .footer-links { display:flex; flex-direction:column; gap:1.2rem; justify-content:flex-end; }
+    .footer-links a {
+      font-size: .9rem; letter-spacing: .2em;
+      text-transform: uppercase; font-weight: 700;
+      color: rgba(242,224,192,.6); text-decoration: none; transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--sabbia); }
+    .footer-bottom {
+      grid-column: span 2; border-top: 1px solid rgba(242,224,192,.1);
+      padding-top: 2rem; font-size: .8rem;
+      color: rgba(242,224,192,.4); letter-spacing: .15em;
+      display: flex; justify-content: space-between;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-left, .hero-right { min-height: 50vh; padding: 4rem 1.5rem; }
+      .about { grid-template-columns: 1fr; }
+      .about-accent { writing-mode: horizontal-tb; padding: 2rem; }
+      .about-accent-text { writing-mode: horizontal-tb; transform: none; font-size: 3rem; }
+      .about-content { border-left: none; border-top: 3px solid var(--ink); padding: 4rem 1.5rem; }
+      .photo-grid { grid-template-columns: 1fr; grid-auto-rows: 240px; gap: 20px; }
+      .photo-card { grid-column: span 1 !important; grid-row: span 1 !important; }
+      .exp-item { grid-template-columns: 1fr; gap: 1rem; padding: 2.5rem 0; }
+      footer { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.5rem 2rem; }
+      .footer-bottom { grid-column: span 1; flex-direction: column; gap: 1rem; }
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; } /* Su mobile una nav ridotta o hamburger è ideale */
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cursore Invertito -->
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <a href="#" class="nav-logo">Il Mio Spazio</a>
+  <ul class="nav-links">
+    <li><a href="#about">Chi sono</a></li>
+    <li><a href="#photos">Foto</a></li>
+    <li><a href="#experiences">Esperienze</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <!-- Marquee di sfondo unico -->
+  <div class="hero-marquee">
+    <div class="marquee-inner">STORIE • FOTOGRAFIA • AVVENTURA • ESPLORAZIONE • </div>
+    <div class="marquee-inner">STORIE • FOTOGRAFIA • AVVENTURA • ESPLORAZIONE • </div>
+  </div>
+
+  <div class="hero-left">
+    <p class="hero-tag">Benvenuto nel mio mondo</p>
+    <h1 class="hero-title">Vivo.<br>Esploro.<br>Ricordo.</h1>
+  </div>
+  <div class="hero-right">
+    <p class="hero-tag">Portfolio personale</p>
+    <h1 class="hero-title">Il mio<br>viaggio.</h1>
+    <p class="hero-subtitle">Un angolo di internet dove racconto le mie storie, condivido le mie foto e preservo i momenti che contano.</p>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      Scorri
+    </div>
+  </div>
+</section>
+
+<div class="strip"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+<section class="about" id="about">
+  <div class="about-accent">
+    <p class="about-accent-text">Chi sono</p>
+  </div>
+  <div class="about-content">
+    <span class="label">La mia storia</span>
+    <h2>Ciao,<br>sono [Il tuo nome]</h2>
+    <p>Sono una persona curiosa che ama esplorare il mondo con occhi aperti e cuore leggero. Questo spazio è il mio diario visivo: un posto dove le parole si intrecciano con le immagini per raccontare chi sono davvero.</p>
+    <p>Qui troverai le avventure che ho vissuto, i luoghi che mi hanno sorpreso, e le piccole grandi cose che rendono la vita degna di essere vissuta.</p>
+  </div>
+</section>
+
+<div class="strip"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+<section class="photos" id="photos">
+  <div class="section-hdr">
+    <h2>Le mie foto</h2>
+    <span class="sub">Galleria d'Autore</span>
+  </div>
+  
+  <div class="photo-grid">
+    <!-- NOTA: Usa l'attributo data-caption per inserire i racconti o i dettagli tecnici dietro le foto! -->
+    <div class="photo-card" data-caption="Alba silenziosa sulle vette delle Dolomiti. Sveglia alle 4:30, ma ne è valsa la pena.">
+      <div class="photo-placeholder">Dolomiti, 2024</div>
+      <img src="" alt="Dolomiti">
+    </div>
+    <div class="photo-card" data-caption="Le strade caotiche e piene di luce di Tokyo a notte fonda.">
+      <div class="photo-placeholder">Tokyo neon</div>
+      <img src="" alt="Tokyo">
+    </div>
+    <div class="photo-card" data-caption="Un piccolo villaggio di pescatori sperduto nei fiordi islandesi.">
+      <div class="photo-placeholder">Islanda rurale</div>
+      <img src="" alt="Islanda">
+    </div>
+    <div class="photo-card" data-caption="Il calore del sole che tramonta nel deserto del Sahara.">
+      <div class="photo-placeholder">Sabbia d'oro</div>
+      <img src="" alt="Deserto">
+    </div>
+    <div class="photo-card" data-caption="Un momento di quiete leggendo davanti all'oceano in Portogallo.">
+      <div class="photo-placeholder">Oceano Atlantico</div>
+      <img src="" alt="Oceano">
+    </div>
+    <div class="photo-card" data-caption="L'architettura imponente e geometrica nascosta nel cuore di Berlino.">
+      <div class="photo-placeholder">Berlino simmetrie</div>
+      <img src="" alt="Berlino">
+    </div>
+    <div class="photo-card" data-caption="I riflessi perfetti sui canali di Amsterdam durante l'autunno.">
+      <div class="photo-placeholder">Canali d'autunno</div>
+      <img src="" alt="Amsterdam">
+    </div>
+  </div>
+</section>
+
+<!-- Struttura Avanzata del Lightbox con Didascalia -->
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightbox-close">&times;</span>
+  <div class="lightbox-wrapper">
+    <img src="" alt="Ingrandimento" id="lightbox-img">
+    <div class="lightbox-caption" id="lightbox-caption">Didascalia della foto...</div>
+  </div>
+</div>
+
+<div class="strip"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+<section class="experiences" id="experiences">
+  <div class="experiences-inner">
+    <span class="label">Le mie storie</span>
+    <h2>Esperienze</h2>
+
+    <article class="exp-item">
+      <div><div class="exp-year">2024</div><span class="exp-season">Estate</span></div>
+      <div class="exp-body">
+        <h3>Il titolo della tua esperienza</h3>
+        <p class="exp-place">📍 Luogo — Paese</p>
+        <p>Descrivi qui la tua esperienza. Cosa hai visto, cosa hai sentito, cosa porterai sempre con te. Scrivi liberamente, con la tua voce autentica: questo è il tuo spazio.</p>
+      </div>
+    </article>
+
+    <article class="exp-item">
+      <div><div class="exp-year">2023</div><span class="exp-season">Autunno</span></div>
+      <div class="exp-body">
+        <h3>Un'altra avventura memorabile</h3>
+        <p class="exp-place">📍 Luogo — Paese</p>
+        <p>Ogni viaggio lascia un segno. Racconta i dettagli che ti hanno colpito: un sapore, un volto, un tramonto che sembrava dipinto. I piccoli dettagli fanno le grandi storie.</p>
+      </div>
+    </article>
+
+    <article class="exp-item">
+      <div><div class="exp-year">2023</div><span class="exp-season">Primavera</span></div>
+      <div class="exp-body">
+        <h3>Quella volta che tutto è cambiato</h3>
+        <p class="exp-place">📍 Luogo — Paese</p>
+        <p>Alcune experiences ci trasformano. Racconta quella che ha aperto i tuoi occhi in un modo nuovo, che ti ha dato una prospettiva diversa o ti ha fatto scoprire qualcosa di te stesso.</p>
+      </div>
+    </article>
+
+    <article class="exp-item">
+      <div><div class="exp-year">2022</div><span class="exp-season">Inverno</span></div>
+      <div class="exp-body">
+        <h3>Il primo grande passo</h3>
+        <p class="exp-place">📍 Luogo — Paese</p>
+        <p>C'è sempre un inizio. Quella prima volta coraggiosa che ha aperto la porta a tutto quello che è venuto dopo. Celebrala qui, perché merita di essere ricordata.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<div class="strip"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+<a href="#" class="back-to-top" id="backToTop">↑</a>
+
+<footer>
+  <div class="footer-name">[Il tuo nome]</div>
+  <div class="footer-links">
+    <a href="#about">Chi sono</a>
+    <a href="#photos">Galleria</a>
+    <a href="#experiences">Esperienze</a>
+    <a href="mailto:tua@email.com">Contattami</a>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 — Il Mio Spazio</span>
+    <span>Fatto con ♥ e curiosità</span>
+  </div>
+</footer>
+
+<script>
+  // ─── Cursore Invertito (X-Ray Effect) ───
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+  
+  // Rende il cerchio gigante sugli elementi importanti
+  function initCursorEffects() {
+    document.querySelectorAll('a, .photo-card, button, .lightbox-close, .exp-item').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+    });
+  }
+  initCursorEffects();
+
+  // ─── Scroll Observer (Fade-In elementi) ───
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 100);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.exp-item').forEach(el => obs.observe(el));
+
+  // ─── Lightbox Interattivo con Didascalie ───
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const lightboxClose = document.getElementById('lightbox-close');
+
+  document.querySelectorAll('.photo-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const img = card.querySelector('img');
+      const captionText = card.getAttribute('data-caption');
+      
+      // Funziona sia se hai inserito una foto reale (src) sia se usi il placeholder per testare
+      if (img) {
+        lightboxImg.src = img.src || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'><rect width='100%' height='100%' fill='%235C4A35'/></svg>";
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = captionText || "Nessuna didascalia inserita.";
+        lightbox.classList.add('active');
+      }
+    });
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === lightboxClose || e.target.classList.contains('lightbox-wrapper')) {
+      lightbox.classList.remove('active');
+    }
+  });
+
+  // ─── Bottone Back to Top ───
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) {
+      backToTop.classList.add('show');
+    } else {
+      backToTop.classList.remove('show');
+    }
+  });
+</script>
+</body>
+</html>
